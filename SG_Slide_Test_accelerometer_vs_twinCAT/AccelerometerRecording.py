@@ -33,6 +33,10 @@ class AccelerometerRecording:
 
           self.data['Elapsed Time (ms)'] = self.data['Elapsed Time (s)'] * 1000
           self.data['Acceleration m/s^2'] = self.data['Acceleration X(g)'] * 9.81
+          self.data = self.data.drop_duplicates(subset=['Elapsed Time (ms)'],keep='first')
+          
+
+
             
      def interpolate_acceleration(self):
           

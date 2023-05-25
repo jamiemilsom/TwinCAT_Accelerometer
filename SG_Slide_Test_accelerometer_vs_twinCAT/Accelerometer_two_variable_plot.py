@@ -13,9 +13,9 @@ def Accelerometer_two_variable_plot(Accelerometer_velocities, Accelerometer_dfs,
             ax2 = ax1.twinx()
 
             
-            sns.lineplot(data=Accelerometer_dfs[velocity].data, x="Elapsed Time (ms)", y=data_type_one, ax=ax1, color=colors[0])
+            sns.scatterplot(data=Accelerometer_dfs[velocity].data, x="Elapsed Time (ms)", y=data_type_one, ax=ax1, color=colors[0])
             
-            sns.lineplot(data=Accelerometer_dfs[velocity].data, x="Elapsed Time (ms)", y=data_type_two, ax=ax2, color=colors[1])
+            sns.scatterplot(data=Accelerometer_dfs[velocity].data, x="Elapsed Time (ms)", y=data_type_two, ax=ax2, color=colors[1])
             
             ax1.set_xlim(time_start, time_end)
             
