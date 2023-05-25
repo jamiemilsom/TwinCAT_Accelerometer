@@ -54,10 +54,11 @@ class AccelerometerRecording:
           
      def convolve_velocity(self, length_of_kernel):
           convolve_vector = np.ones(length_of_kernel) / length_of_kernel
-          self.TC_data['Convolved Velocity m/s^2'] = convolve(self.TC_data['Velocity m/s'].values,convolve_vector,mode='same')
+          self.TC_data['Convolved Velocity m/s'] = convolve(self.TC_data['Velocity m/s'].values,convolve_vector,mode='same')
     
 
-
+     def save_as_csv(self):
+          self.TC_data.to_csv(str(self.position_range) + "_" + str(self.velocity))
 
      def __repr__(self):
                return "This Accelerometer recording is at {velocity}mm/s from {position_one}mm to {position_two}mm along the slide.".format(
