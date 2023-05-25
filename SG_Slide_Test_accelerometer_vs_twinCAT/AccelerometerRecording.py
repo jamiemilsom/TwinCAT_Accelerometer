@@ -6,7 +6,7 @@ from scipy.signal import convolve
 from scipy.integrate import cumtrapz
 
 class AccelerometerRecording:
-     def __init__(self,path):
+     def __init__(self,path,sample_rate_hz):
           self.path = path
           
           self.filename = os.path.basename(path)[:-8]
@@ -28,10 +28,8 @@ class AccelerometerRecording:
           self.data = pd.read_csv(path)
           self.data.rename(columns={self.data.columns[0]: 'Time h/m/s/ms', self.data.columns[1]: 'Device Name'}, inplace=True)
           
-          self.data['Time h/m/s/ms'] = pd.to_datetime(self.data['Time h/m/s/ms'].str.strip(), format='%H:%M:%S.%f')
-          self.data['Elapsed Time (s)'] = (self.data['Time h/m/s/ms'] - self.data.loc[0, 'Time h/m/s/ms']).dt.total_seconds()
-
-          self.data['Elapsed Time (ms)'] = self.data['Elapsed Time (s)'] * 1000
+          
+          self.data['Elapsed Time (ms)'] = (self.data.index / sample_rate_hz) * 1000
           self.data['Acceleration m/s^2'] = self.data['Acceleration X(g)'] * 9.81
           self.data = self.data.drop_duplicates(subset=['Elapsed Time (ms)'],keep='first')
           
@@ -55,6 +53,10 @@ class AccelerometerRecording:
      def convolve_velocity(self, length_of_kernel):
           convolve_vector = np.ones(length_of_kernel) / length_of_kernel
           self.TC_data['Convolved Velocity m/s'] = convolve(self.TC_data['Velocity m/s'].values,convolve_vector,mode='same')
+          
+     def convolve_acceleration(self, length_of_kernel):
+          convolve_vector = np.ones(length_of_kernel) / length_of_kernel
+          self.TC_data['Convolved Acceleration m/s^2'] = convolve(self.TC_data['Acceleration m/s^2'].values,convolve_vector,mode='same')
     
 
      def save_as_csv_raw(self):
