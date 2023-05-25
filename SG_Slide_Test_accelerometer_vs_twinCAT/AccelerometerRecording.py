@@ -57,8 +57,11 @@ class AccelerometerRecording:
           self.TC_data['Convolved Velocity m/s'] = convolve(self.TC_data['Velocity m/s'].values,convolve_vector,mode='same')
     
 
-     def save_as_csv(self):
-          self.TC_data.to_csv(str(self.position_range) + "_" + str(self.velocity))
+     def save_as_csv_raw(self):
+          self.data.to_csv(str(self.position_range) + "_" + str(self.velocity) + "_raw")
+          
+     def save_as_csv_edited(self):
+          self.TC_data.to_csv(str(self.position_range) + "_" + str(self.velocity) + "_edited")
 
      def __repr__(self):
                return "This Accelerometer recording is at {velocity}mm/s from {position_one}mm to {position_two}mm along the slide.".format(
