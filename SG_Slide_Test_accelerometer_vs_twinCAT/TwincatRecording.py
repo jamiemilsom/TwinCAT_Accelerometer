@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 from scipy.interpolate import interp1d
 from scipy.signal import convolve
+from scipy.integrate import cumtrapz
 
 class TwincatRecording:
     def __init__(self,path):
@@ -47,6 +48,12 @@ class TwincatRecording:
         convolve_vector = np.ones(length_of_kernel) / length_of_kernel
         self.data['Convolved Acceleration m/s^2'] = convolve(self.data['Acceleration m/s^2'].values,convolve_vector,mode='same')
 
+    def calculate_velocity(self):
+          self.data['AccItp Velocity m/s'] = cumtrapz(self.data['SetAccItp'],x=self.data['Time (ms)'],initial=0) / 1000
+          
+    def convolve_velocity(self, length_of_kernel):
+          convolve_vector = np.ones(length_of_kernel) / length_of_kernel
+          self.data['Convolved Velocity m/s'] = convolve(self.data['Velocity m/s'].values,convolve_vector,mode='same')
     
     def __repr__(self):
         
@@ -56,3 +63,4 @@ class TwincatRecording:
             position_two=self.position_two,
             rising_edge_position = self.rising_edge_position
             )
+        
